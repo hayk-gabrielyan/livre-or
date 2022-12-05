@@ -1,0 +1,69 @@
+/**************** main - start ****************/
+body{
+  background-color: rgb(235, 235, 235);
+}
+
+main{
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+ height: 70vh;
+  padding: 0;
+  width: 100%;
+  z-index: 0;
+}
+
+section{
+  width: 50%;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  background-color: white;
+}
+
+
+/* Set a style for the submit button */
+button {
+  background-color: #F87000;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+  font-size: 17px;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+
+
+.bold{
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+
+ #policy{
+  font-size: 15px;
+ }
+
+/**************** main - end ****************/    
+
+
