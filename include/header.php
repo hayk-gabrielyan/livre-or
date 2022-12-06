@@ -16,6 +16,8 @@
         <!-- Sinon, si le login de la Session ouverte est "admin" -->
     <?php } elseif($_SESSION['login'] === "admin"){?>
                 <a href="admin.php">Information Utilisateurs</a>
+                <a href="livre-or.php">Livre d'or</a>
+                <a href="Profil.php">Profil</a>
                 <a href="deconnexion.php">Se déconnecter</a>
 
     <!-- Si une Session user est ouverte -->

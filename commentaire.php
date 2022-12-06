@@ -1,40 +1,41 @@
 <?php session_start();
 
+// connexion à la bdd
+include('include/connect_db.php'); 
+
 //protection contre l'acces direct par url
 if (!$_SESSION['loginOK']) {
     header('Location: connexion.php');
 }
 
-// rappel des variable contenant les informations de l'utilisateur
+// déclaration des variables contenant les informations de l'utilisateur
 $login = $_SESSION['login'];
 $password = $_SESSION['password'];
 
-var_dump($login);
-var_dump($password);
 
-// connexion à la base de donnée
-include('include/connect_db.php'); 
+//recuperation de l'id d'utilisateur de la bdd
+$resultat= mysqli_query($connect, "SELECT  id from utilisateurs WHERE login='$login'");
+$row = mysqli_fetch_array($resultat);	
+$id_user=$row['id'];
 
 // si le bouton est appuyée
 if(isset($_POST['submit'])) {
-    $commentaire = $_POST['commentaire'];
-    var_dump($commentaire);
-    $requete = "INSERT INTO commentaires ( commentaire, id_utilisateur, date) VALUES ('$commentaire','1', CURRENT_TIMESTAMP());";
-    var_dump($requete);
-    $exec_requete = $connect -> query($requete);
-    var_dump($exec_requete);
-} 
+	$commentaire = $_POST['commentaire'];
+	$query1 = "INSERT INTO `commentaires` (`commentaire`, `id_utilisateur`, `date`) VALUES ('$commentaire', '$id_user', CURRENT_TIMESTAMP());";		
+	mysqli_query($connect, $query1);	
 
-
-mysqli_close($connect); // fermer la connexion
+	header('Location: livre-or.php');
+}
 ?>
+
+
 
 <!-- partie HTML -->
 <!DOCTYPE html>
 <html>
 <head>
 <title>Ajout de commentaire</title>
-<link rel="stylesheet" href="styles/add_comment-style.css" />
+<link rel="stylesheet" href="styles/commentaire-style.css" />
 <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -48,6 +49,7 @@ mysqli_close($connect); // fermer la connexion
     <form action="" method="POST">
 
         <div class="container">
+            <div>Voici le forum <?php echo $login ?></div>
             <div class="bold">Ajouter un commentaire</div>
             <hr>
             <textarea type="text" placeholder="Saissisez votre commentaire ici ..." name="commentaire" required></textarea>
@@ -62,18 +64,11 @@ mysqli_close($connect); // fermer la connexion
 
 </main>
 
-<!-- partie PHP qui affiche l'erreur de utilisateur existant ou mot de passes qui correspondent pas -->
-<?php
-    if(isset($_GET['erreur'])){
-        $err = $_GET['erreur'];
-        if($err==1){
-            echo "<center><p style='color:red'>Commentaire non enregistré</p></center>";
-        }
-    }
-?>
-
 <!-- footer des pages -->
-<?php include('include/footer.php'); ?>
+<?php 
+mysqli_close($connect); // fermer la connexion
+include('include/footer.php'); 
+?>
 
 
 

@@ -26,8 +26,6 @@ if (!$_SESSION['loginOK']) {
                         <tr>
                             <th>Id</th>
                             <th>Nom d'utilisateur</th>
-                            <th>Prénom</th>
-                            <th>Nom</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,8 +37,6 @@ if (!$_SESSION['loginOK']) {
                                 echo "<tr>";
                                 echo "<td>".$result['id']."</td>";
                                 echo "<td>".$result['login']."</td>";
-                                echo "<td>".$result['prenom']."</td>";
-                                echo "<td>".$result['nom']."</td>";
                                 echo "</tr>";
                             }
                         ?>

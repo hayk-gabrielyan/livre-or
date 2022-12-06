@@ -1,12 +1,12 @@
 <?php
+    //démarrage de la session
     session_start();
-    include('include/connect_db.php'); // connexion à la base de donnée
+    // connexion à la base de donnée
+    include('include/connect_db.php'); 
     
     if (!$_SESSION['loginOK']) {
         header('Location: connexion.php');
     }
-
-    mysqli_close($connect); // fermer la connexion
 ?>
 
 <!-- partie HTML -->
@@ -24,15 +24,49 @@
 <?php include('include/header.php'); ?>
 <main>
 <section>
+                            <div class="Bienvenue">Bienvenue <?php echo $_SESSION['login'];?></div>
+                            <p>Voici la liste de tous les commentaires.</p>
+
+
+                            <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Créé par</th>
+                                            <th>Nom d'utilisateur</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $request="SELECT login, date, id_utilisateur, commentaire FROM `utilisateurs` ,`commentaires` WHERE utilisateurs.id = id_utilisateur ORDER BY date DESC";
+                                            
+                                            //$request = "SELECT * FROM commentaires ORDER BY date DESC;";
+                                            $exec_request = $connect -> query($request);
+                                            while(($result = $exec_request -> fetch_assoc()) != null)
+                                            {
+                                                echo "<tr>";
+                                                echo "<td>".$result['login']."</td>";
+                                                echo "<td>".$result['commentaire']."</td>";
+                                                echo "<td>".$result['date']."</td>";
+                                                echo "</tr>";
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+
+
     <div class="bold">Souhaitez-vous ajouter un commentaire?</div>
-    <a href="add_comment.php"><button class="btn"> Cliquez ici</button></a>
+    <a href="commentaire.php"><button class="btn"> Cliquez ici</button></a>
 
 </section>
 
 </main>
 
-<!-- footer des pages -->
-<?php include('include/footer.php'); ?>
+<!-- footer des pages et fermeture de la session -->
+<?php 
+mysqli_close($connect); // fermer la connexion
+include('include/footer.php'); 
+?>
 
 
 
