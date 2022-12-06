@@ -92,8 +92,9 @@ include 'include/connect_db.php';
             if (password_verify($password, $password_hash)) { //mot de passe correct
                 // stockage des nouvelles infos dans la BDD
                 $password = password_hash($password, PASSWORD_DEFAULT);
-                $requete = "UPDATE utilisateurs SET login = '".$_POST['login']."', where login = '".$login."'";
+                $requete = "UPDATE utilisateurs SET login = '".$_POST['login']."' where login = '".$login."'";
                 $exec_requete = $connect -> query($requete);
+                var_dump($exec_requete);
                 // stockage des nouvelles infos dans les variables de session
                 $login = $_POST['login'];
                 $_SESSION['login'] = $login;

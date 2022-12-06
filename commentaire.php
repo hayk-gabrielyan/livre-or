@@ -3,10 +3,10 @@
 // connexion à la bdd
 include('include/connect_db.php'); 
 
-//protection contre l'acces direct par url
-if (!$_SESSION['loginOK']) {
-    header('Location: connexion.php');
-}
+// //protection contre l'acces direct par url
+// if (!$_SESSION['loginOK']) {
+//     header('Location: connexion.php');
+// }
 
 // déclaration des variables contenant les informations de l'utilisateur
 $login = $_SESSION['login'];
@@ -23,7 +23,6 @@ if(isset($_POST['submit'])) {
 	$commentaire = $_POST['commentaire'];
 	$query1 = "INSERT INTO `commentaires` (`commentaire`, `id_utilisateur`, `date`) VALUES ('$commentaire', '$id_user', CURRENT_TIMESTAMP());";		
 	mysqli_query($connect, $query1);	
-
 	header('Location: livre-or.php');
 }
 ?>
@@ -49,7 +48,6 @@ if(isset($_POST['submit'])) {
     <form action="" method="POST">
 
         <div class="container">
-            <div>Voici le forum <?php echo $login ?></div>
             <div class="bold">Ajouter un commentaire</div>
             <hr>
             <textarea type="text" placeholder="Saissisez votre commentaire ici ..." name="commentaire" required></textarea>

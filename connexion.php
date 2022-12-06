@@ -1,13 +1,6 @@
-
 <?php
     include('include/connect_db.php'); // connexion à la base de donnée
-
-    if (isset($_GET['erreur'])) {
-        $err = $_GET['erreur'];
-        if ($err == 1 || $err == 2) $errMsg = "<p style='color:red'>Utilisateur ou mot de passe incorrect</p>"; 
-    }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +21,7 @@
         <div class="Bienvenue">Bienvenue</div>
         <div class="chez">
             <div >chez</div>
-                <img src="img/logo_black_letters.png" class="accueil-logo">
+                <img src="img/logo_black_letters.svg" class="accueil-logo">
             </div>
             <p>Conseil et expertise en Système d'information</p>
     </div>
@@ -44,8 +37,14 @@
                 <input class="input-field" type="password" placeholder="Mot de passe" name="password" >
             </div>
             <button type="submit" name="submit" class="button">Se connecter</button>
-            <?php echo $errMsg ?? ''; ?>
         </form>
+        <?php
+            if(isset($_GET['erreur'])){
+                $err = $_GET['erreur'];
+                if($err==1 || $err==2)
+                    echo "<p style='color:red'>Utilisateur ou mot de passe incorrect</p>";
+            }              
+        ?> 
     </div>
 </section>
 </main>

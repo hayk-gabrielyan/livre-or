@@ -1,3 +1,7 @@
+<?php
+    include('include/connect_db.php'); // connexion à la base de donnée
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +15,9 @@
 <main>
 <section>
     <div class="left_block">
-        <div class="Bienvenue">Bienvenue</div>
+        <div class="Bienvenue">Bienvenue sur le forum</div>
             <div class="chez">
-                <div >chez</div>
+                <div >de</div>
                 <img src="img/logo_black_letters.png" class="accueil-logo">
             </div>
             <p>Conseil et expertise en Système d'information</p>
@@ -25,6 +29,23 @@
         <a href="inscription.php"><button class="button orange">S'inscrire</button></a>
     </div>
 </section>
+
+<p id="connInst">Inscrivez ou connectez vous pour laisser un commentaire.</p>
+
+<?php
+    $request="SELECT login, date, id_utilisateur, commentaire FROM `utilisateurs` ,`commentaires` WHERE utilisateurs.id = id_utilisateur ORDER BY date DESC";
+    $exec_request = $connect -> query($request);
+
+    foreach ($exec_request as $row) { // génération des commentaires
+        
+        echo '  <div id="commentaire">
+                    <h5>posté le ' . $row['date'] . ' par ' . $row['login'] .   '</h5>
+                    <p>' . $row['commentaire'] . '</p> 
+                </div>';
+                
+    }
+
+?>
 
 </main>
 <!--footer des pages-->
