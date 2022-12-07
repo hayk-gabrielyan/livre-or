@@ -8,6 +8,8 @@
 <title>Accueil</title>
 <link rel="stylesheet" href="styles/style.css" />
 <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
 </head>
 <body>
 <!--header des pages-->
@@ -42,7 +44,6 @@
                     <h5>posté le ' . $row['date'] . ' par ' . $row['login'] .   '</h5>
                     <p>' . $row['commentaire'] . '</p> 
                 </div>';
-                
     }
 
 ?>

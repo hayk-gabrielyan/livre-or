@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="styles/livre_or-style.css" />
 <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
 </head>
 <body >
 
@@ -31,18 +33,23 @@
         ?>
     </div>
     
-    <p id="subTitle">Bienvenue sur notre forum !</p>
+    <div id="subTitle">Bienvenue sur notre forum !</div>
 
 <?php
     $request="SELECT login, date, id_utilisateur, commentaire FROM `utilisateurs` ,`commentaires` WHERE utilisateurs.id = id_utilisateur ORDER BY date DESC";
     $exec_request = $connect -> query($request);
 
     foreach ($exec_request as $row) { // génération des commentaires
-        echo '  <div id="commentaire">
-                    <h5>posté le ' . $row['date'] . ' par ' . $row['login'] .   '</h5>
-                    <p>' . $row['commentaire'] . '</p> 
-                </div   >';
-    }
+                echo ' 
+                            <div id="commentaire">
+                                <div >
+                                    <h5>Posté le ' .$row['date'] . '   Par  ' . $row['login'] .'</h5>
+                                </div>
+                                <div >
+                                    <p>' .$row['commentaire'] . '</p> 
+                                </div>
+                            </div>';
+            }
 
 ?>
 

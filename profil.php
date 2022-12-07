@@ -11,6 +11,8 @@ include 'include/connect_db.php';
 <link rel="stylesheet" href="styles/profile.css" />
 <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
 </head>
 <body>
 <!--header des pages-->

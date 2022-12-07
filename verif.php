@@ -1,6 +1,7 @@
 <?php
     session_start();
     include('include/connect_db.php');
+
     if (isset($_POST['login']) && isset($_POST['password'])) {//On verifie ici si l'utilisateur a rentré des informations
        //Nous allons mettres le login et le mot de passe dans des variables
         $login = $_POST['login']; 

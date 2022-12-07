@@ -1,8 +1,6 @@
 <?php session_start();
 //protection à l'acces direct par url
-if (!$_SESSION['loginOK']) {
-    header('Location: connexion.php');
-}
+
 ?>
 
 <?php
@@ -17,6 +15,8 @@ if (!$_SESSION['loginOK']) {
 <title>user</title>
 <link rel="stylesheet" href="styles/user.css" />
 <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
+<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
 </head>
 <body>
 

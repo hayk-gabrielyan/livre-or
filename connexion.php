@@ -4,16 +4,17 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<title>Connexion</title>
-<link rel="stylesheet" href="styles/connexion-style.css" />
-<link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+    <head>
+        <title>Connexion</title>
+        <link rel="stylesheet" href="styles/connexion-style.css" />
+        <link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <meta charset="UTF-8">
+        <meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
+    </head>
 <body>
 <!-- header des pages -->
 <?php include('include/header.php'); ?>
-
 
 <main>
 <section>
@@ -21,7 +22,7 @@
         <div class="Bienvenue">Bienvenue</div>
         <div class="chez">
             <div >chez</div>
-                <img src="img/logo_black_letters.svg" class="accueil-logo">
+                <img src="img/logo_black_letters.png" class="accueil-logo">
             </div>
             <p>Conseil et expertise en Système d'information</p>
     </div>
@@ -38,6 +39,7 @@
             </div>
             <button type="submit" name="submit" class="button">Se connecter</button>
         </form>
+        <?php echo $errMsg ?? ''; ?>
         <?php
             if(isset($_GET['erreur'])){
                 $err = $_GET['erreur'];
