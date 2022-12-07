@@ -35,24 +35,28 @@
     
     <div id="subTitle">Bienvenue sur notre forum !</div>
 
+    <div class="bold"> Pour laisser un commentaire 
+        <a href="commentaire.php"><button class="btn"> Cliquez ici</button></a>
+    </div>
+
 <?php
     $request="SELECT login, date, id_utilisateur, commentaire FROM `utilisateurs` ,`commentaires` WHERE utilisateurs.id = id_utilisateur ORDER BY date DESC";
     $exec_request = $connect -> query($request);
 
     foreach ($exec_request as $row) { // génération des commentaires
-                echo ' 
-                            <div id="commentaire">
-                                <div >
-                                    <h5>Posté le ' .$row['date'] . '   Par  ' . $row['login'] .'</h5>
-                                </div>
-                                <div >
-                                    <p>' .$row['commentaire'] . '</p> 
-                                </div>
-                            </div>';
-            }
+    echo ' 
+        <div id="commentaire">
+            <div >
+                <h5>Posté le ' .$row['date'] . '   Par :  ' . $row['login'] .'</h5>
+            </div>
+            <div >
+                <p>' .$row['commentaire'] . '</p> 
+            </div>
+        </div>';
+    }
 
 ?>
-
+<section id="space"></section>
 
     <div class="bold">Souhaitez-vous ajouter un commentaire?</div>
     <a href="commentaire.php"><button class="btn"> Cliquez ici</button></a>
