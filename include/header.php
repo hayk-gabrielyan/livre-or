@@ -1,3 +1,4 @@
+
 <link rel="stylesheet" href="styles/header-style.css" />
 <!--header-->
 <header>
@@ -10,6 +11,7 @@
     <!-- Si aucune Session n'est ouverte -->
     <?php if(!isset($_SESSION['login'])){ ?>
         <a href="index.php" class="active" href=index.html>Accueil</a>
+        <a href="livre-or-!con.php">Livre d'or</a>
         <a href="connexion.php"class="no_active" href="shazam.html" >Connexion</a>
         <a href="inscription.php"class="no_active" href="spotify.html" >Inscription</a>
     
@@ -26,6 +28,8 @@
             <a href="livre-or.php">Livre d'or</a>
             <a href="deconnexion.php">Se déconnecter</a>     
         <?php } ?>
+    
+
     </div>
 </header>
 <!--header end-->

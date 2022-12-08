@@ -1,11 +1,10 @@
   /**************** main - start ****************/
   body{
     background-color: rgb(235, 235, 235);
-    
   }
 
   main{
-    font-size: 25px;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
