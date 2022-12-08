@@ -1,47 +1,45 @@
 <?php
-    session_start();
-    include('include/connect_db.php');
+// démarrer une session
+session_start();
+include 'include/connect_db.php';
 
-    if (isset($_POST['login']) && isset($_POST['password'])) {//On verifie ici si l'utilisateur a rentré des informations
-       //Nous allons mettres le login et le mot de passe dans des variables
-        $login = $_POST['login']; 
-        $password = $_POST['password'];
-      //Nous allons verifier si les informations entrée sont correctes
-        if($login !== "" && $password !== ""){
-            //requete pour selectionner  l'utilisateur qui a pour login et mot de passe les identifiants qui ont été entrées
-            $requete = "SELECT count(*) FROM utilisateurs where 
-                    login = '".$login."'";// and password = '".$password."' ";
-            $exec_requete = $connect -> query($requete);
-            $reponse      = mysqli_fetch_array($exec_requete);
-            $count = $reponse['count(*)'];
+// attribution d'une valeur par défaut aux POST pour éviter les erreurs
+if (!isset($_POST["login"])) {
+    $_POST["login"] = "";
+    $_POST["password"] = "";
+};
 
-            if($count!=0){ // nom d'utilisateur correct
-                $requete = "SELECT password FROM utilisateurs where login = '".$login."'";
-                $exec_requete = $connect -> query($requete);
-                $reponse      = mysqli_fetch_array($exec_requete);
-                $password_hash = $reponse['password'];
-                if (password_verify($password, $password_hash)) { //mot de passe correct
-                    // stockage des infos de l'utilisateur dans des variables session
-                    $requete = "SELECT login, password FROM utilisateurs where login = '".$login."'";
-                    $exec_requete = $connect -> query($requete);
-                    $reponse = mysqli_fetch_array($exec_requete);
-                    $_SESSION['login'] = $login;
-                    $_SESSION['password'] = $reponse['password'];
-                    header('Location: user.php');
-                }
-                else{
-                    header('Location: connexion.php?erreur=1'); // utilisateur ou mot de passe incorrect
-                }
-            }
-            else{
-                header('Location: connexion.php?erreur=1'); // utilisateur ou mot de passe incorrect
-            }
+// création des variables issues des POST
+$login = $_POST["login"];
+$password = $_POST["password"];
+
+// requete pour récupérer le contenu de la DB pour l'utilisateur concerné
+$catchUsers = $connect->query("SELECT * FROM utilisateurs WHERE login='$login';");
+// verifier si le login existe déjà en comptant les éventuels doublons
+$users = mysqli_num_rows($catchUsers);
+// fetch le contenu de la requête
+$userInfo = $catchUsers->fetch_all();
+
+
+// condition pour rentrer dans les erreurs que lorsque des données sont rentrées
+if (isset($_POST['submit'])) {
+    // une requete pour valider la connexion si le login existe déjà et que le mot de passe correspond à celui en DB
+    if (($users === 1) && ($_POST["password"] === $userInfo[0][2])) {
+        // si le login existe, qu'il y a une valeur à login et password 
+        if (($users === 1) && ($login != NULL) && ($password != NULL)) {
+            // définir les valeurs de session
+            $_SESSION["login"] = $login;
+            $_SESSION["password"] = $password;
+            // puis valider la connexion en redirigeant vers profil.php
+            header('Location: user.php');
         }
-        else{
-            header('Location: connexion.php?erreur=2'); // utilisateur ou mot de passe vide
-        }
+    } elseif ($users != 1) {
+        header('Location: connexion.php?erreur=1');
+        echo "Ce login n'existe pas";
+    } elseif ($_POST["password"] !== $userInfo[0][2]) {
+        header('Location: connexion.php?erreur=2');
+        echo "Mot de pas incorrect";
     }
-    else{
-        header('Location: connexion.php');
-    }
-    mysqli_close($connect); // fermer la connexion
+}
+
+?>

@@ -1,64 +1,60 @@
-<!--connexion à la base de donnée-->
-<?php 
+<?php
+// démarrer une session
 session_start();
+include 'include/header.php';
 include 'include/connect_db.php';
+
+// récupéer les valeurs de session
+$login = $_SESSION['login'];
+$password = $_SESSION['password'];
+
+// modifier les informations
+// requete pour récupérer les infos de la DB
+$catchInfos = $connect->query("SELECT login, password FROM utilisateurs WHERE login = '$login'");
+$displayInfos = $catchInfos->fetch_all();
+
+// si le formulaire est envoyé
+if (isset($_POST['submit'])) {
+    // les post deviennent les nouvelles valeurs
+    $confpwd = ($_POST['confpwd']);
+    $newpwd2 = ($_POST['newpwd2']);
+    $newpwd = ($_POST['newpwd']);
+    $newlogin = ($_POST['login']);
+
+    // si l'ancien pwd est le bon et que les nouveaux pwd correspondent
+    if (($confpwd == $password) && ($newpwd == $newpwd2)) {
+        // faire la requete de mise à jour de la db avec les nouvelles valeurs
+        $upInfo = $connect->query("UPDATE utilisateurs SET login ='$newlogin', password = '$newpwd' WHERE login='$login'");
+        echo "Les modifications ont bien été prises en compte";
+        // et sauver les nouvelles valeurs
+        $_SESSION['login'] = $newlogin;
+        $_SESSION['pwd'] = $newpwd;
+        header('Location: profil.php?erreur=1');
+    } else {
+        header('Location: profil.php?erreur=2');
+    }
+}
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-<title>Inscription</title>
-<link rel="stylesheet" href="styles/profile.css" />
-<link rel="icon" type="image/x-icon" href="img/logo-onglet.svg">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<meta charset="UTF-8">
-<meta http-equiv="x-ua-compatible" content="IE=Edge,chrome=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/profile.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet" />
+    <title>Modification de profil</title>
 </head>
+
 <body>
-<!--header des pages-->
-<?php include('include/header.php'); ?>
+
+
 <main>
     <section>
 
-        <?php 
-            // rappel des variable contenant les informations de l'utilisateur
-            $login = $_SESSION['login'];
-            $password = $_SESSION['password'];
-
-            //Message de bienvenue
-            echo "<p> Bonjour <span id='user'>$login</span> </p>";
-
-            // affichage en cas d'erreur
-            if(isset($_GET['erreur'])){
-                if($_GET['erreur'] == 0)
-                    echo "<p style='color:green'>Modifications enregistrées</p>";
-                else if ($_GET['erreur'] == 1){
-                    echo "<p style='color:red'>Mot de passe incorrect, modifications non réalisées</p>";
-                }
-                else if ($_GET['erreur'] == 2){
-                    echo "<p style='color:red'>Veuillez entrer votre mot de passe pour réaliser des changements</p>";
-                }
-            }
-
-        
-            //affichage en cas d'erreur
-            if(isset($_GET['erreur'])){
-                if ($_GET['erreur'] == 3){
-                    echo "<p style='color:red'>Les deux mots de passe ne correspondent pas</p>";
-                }
-                else if ($_GET['erreur'] == 4){
-                    echo "<p style='color:red'>Veuillez entrer un nouveau mot de passe</p>";
-                }
-                else if ($_GET['erreur'] == 5){
-                    echo "<p style='color:red'>Case ancien mot de passe vide ou incorrect</p>";
-                }
-                else if ($_GET['erreur'] == 6){
-                    echo "<p style='color:green'>Modifications enregistrées</p>";
-                }
-            }
-        ?>
-
-        <form action="" method="POST">
+        <form action="profil.php" method="POST">
         <div class="container">
             <div class="bold register">Formulaire de modification de vos informations</div>
             <hr>
@@ -66,96 +62,36 @@ include 'include/connect_db.php';
             <label for="login" class="bold">Changer le nom d'utilisateur</label>
             <input type="text" placeholder="Saissisez ici le nouveau nom d'utilisateur ..." name="login"  value="<?=$login?>" required >
 
-            <label for="password" class="bold">Ancien mot de passe</label>
-            <input type="password" name ="password"  value="" placeholder="Entrez votre ancien mot de passe" >
+            <label for="confpwd" class="bold">Ancien mot de passe</label>
+            <input type="password" name ="confpwd"  value="" placeholder="Entrez votre ancien mot de passe" >
 
-            <label for="newpassword" class="bold">Nouveau mot de passe</label>
-            <input type="password" name="newpassword" placeholder="Saissisez ici le nouveau mot de passe ..."  required  >
+            <label for="newpwd" class="bold">Nouveau mot de passe</label>
+            <input type="password" name="newpwd" placeholder="Saissisez ici le nouveau mot de passe ..."  required  >
 
-            <label for="newpassword2" class="bold">Confirmer le nouveau mot de passe</label>
-            <input type="password" name="newpassword2" placeholder="Confirmer ici le nouveau mot de passe ..."  required  >
+            <label for="newpwd2" class="bold">Confirmer le nouveau mot de passe</label>
+            <input type="password" name="newpwd2" placeholder="Confirmer ici le nouveau mot de passe ..."  required  >
             <hr>
 
-            <button type="submit" class="registerbtn">Enregistrer les modifications</button>
-        </div>
+            <button type="submit" name="submit" class="registerbtn">Enregistrer les modifications</button>
+
         </form>
+
+        <?php
+            if(isset($_GET['erreur'])){
+                $err = $_GET['erreur'];
+                if($err==1){
+                    echo "<center><p style='color:green'>Modifications enregisrées</p></center>";
+                }
+                if($err==2){
+                    echo "<center><p style='color:red'>Mot de passe invalid</p></center>";
+                }
+            }
+        ?>
 
     </section>
 </main>
-
-<?php
-    if(isset($_POST['login']) && isset($_POST['password'])){
-        $password = $_POST['password'];
-        if ($password != ""){
-            $requete = "SELECT password FROM utilisateurs where login = '".$login."'";
-            $exec_requete = $connect -> query($requete);
-            $reponse = mysqli_fetch_array($exec_requete);
-            $password_hash = $reponse['password'];
-            if (password_verify($password, $password_hash)) { //mot de passe correct
-                // stockage des nouvelles infos dans la BDD
-                $password = password_hash($password, PASSWORD_DEFAULT);
-                $requete = "UPDATE utilisateurs SET login = '".$_POST['login']."' where login = '".$login."'";
-                $exec_requete = $connect -> query($requete);
-                var_dump($exec_requete);
-                // stockage des nouvelles infos dans les variables de session
-                $login = $_POST['login'];
-                $_SESSION['login'] = $login;
-                // redirection vers la page profil avec les nouvelles données
-                header('Location: profil.php?erreur=0');
-            }
-            else{
-                header('Location: profil.php?erreur=1'); // mot de passe incorrect
-            }
-        }
-        else{
-            header('Location: profil.php?erreur=2'); // mot de passe vide
-        }
-    }
-?>
-
-
-
-<?php
-    if(isset($_POST['password']) && isset($_POST['newpassword']) && isset($_POST['newpassword2'])){
-        if ($_POST['password'] != ""){
-            if (password_verify($_POST['password'], $password)) { // ancien mot de passe correct
-                if (isset($_POST['newpassword']) && $_POST['newpassword'] !== '' && isset($_POST['newpassword2']) && $_POST['newpassword2'] !== ''){
-                    if ($_POST['newpassword'] == $_POST['newpassword2']){ // nouveau mot de passe correct
-                        $password = password_hash($_POST['newpassword'], PASSWORD_BCRYPT);
-                        // stockage du nouveau mot de passe dans la BDD
-                        $requete = "UPDATE utilisateurs SET password = '".$password."'";
-                        $exec_requete = $connect -> query($requete);
-                        // stockage du nouveau mot de passe dans les variables de session
-                        $_SESSION['password'] = $password;
-                        // redirection avec message de réussite
-                        header('Location: profil.php?erreur=6');
-                        
-                    }
-                    else{
-                        // $_SESSION['erreur'] = 3; // les deux mots de passe ne correspondent pas
-                        header('Location: profil.php?erreur=3'); // deux mots de passe différents
-                    }
-                }
-                else{
-                    //$_SESSION['erreur'] = 4; // case nouveau mot de passe vide
-                    header('Location: profil.php?erreur=4'); // nouveau mot de passe vide
-                }
-            }
-            else{
-                //$_SESSION['erreur'] = 5; // ancien mot de passe incorrect
-                header('Location: profil.php?erreur=5'); // ancien mot de passe incorrect
-            }
-        }
-        else{
-            //$_SESSION['erreur'] = 5; // ancien mot de passe vide
-            header('Location: profil.php?erreur=5'); // ancien mot de passe vide
-        }
-    }
-
-?>
-
-<!--footer des pages-->
-<?php include('include/footer.php'); ?>
+<?php include 'include/footer.php';?>
 
 </body>
+
 </html>
