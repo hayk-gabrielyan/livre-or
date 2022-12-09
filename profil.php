@@ -8,7 +8,6 @@ include 'include/connect_db.php';
 $login = $_SESSION['login'];
 $password = $_SESSION['password'];
 
-// modifier les informations
 // requete pour récupérer les infos de la DB
 $catchInfos = $connect->query("SELECT login, password FROM utilisateurs WHERE login = '$login'");
 $displayInfos = $catchInfos->fetch_all();

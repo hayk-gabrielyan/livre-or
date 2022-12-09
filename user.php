@@ -1,7 +1,4 @@
-<?php session_start();
-//protection à l'acces direct par url
-
-?>
+<?php session_start();?>
 
 <?php
     // rappel des variable contenant les informations de l'utilisateur
