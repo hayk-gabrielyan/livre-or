@@ -15,7 +15,7 @@
             $count = $reponse['count(*)'];
 
             if($count==0){
-                $requete = "INSERT INTO utilisateurs (login, password) VALUES ('".$login."', '".($password)."')";
+                $requete = "INSERT INTO utilisateurs (login, password) VALUES ('".$login."', '".$password."')";
                 $exec_requete = $connect -> query($requete);
                 header('Location: connexion.php');
             }
